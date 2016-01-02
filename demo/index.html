@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>jQuery Boilerplate</title>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+		<script src="../dist/jquery.circulum.min.js"></script>
+        
+        <script src="//localhost:35729/livereload.js"></script>
+	</head>
+	<body>
+        
+		<canvas id="element" height="400" width="400"></canvas>
+        <canvas id="element1" height="400" width="400"></canvas>
+        <button id="plus">+</button>
+        <button id="min">-</button>
+        
+        
+        <button id="grow">100</button>
+        <button id="shrink">0</button>
+        
+        <button id="getStat">Get</button>
+         <button id="destroy">destroy</button>
+        
+        
+		<script>
+			$(function() {
+				
+                
+                // Initialize plugin with default options.
+                 var x = $('#element').circular({
+                     
+                     style: 'half',
+                     radius: 150,
+                     initPercentValue: 75,
+                     background: 'transparent',
+                     'border-radius':1,
+                     'border-style': 'solid',
+                     'border-color': 'rgba(217, 30, 24,.1)',
+                      infocircle: {
+                            'background-color': '#fff',
+                            'shadow-color': 'rgba(21, 21, 21,0)'
+
+                        },
+                      datacircle:{
+                        innercolor: '#DADFE1',
+                        outercolor: '#DADFE1',
+                      },
+                     onSuccess: function(Percent){
+                         alert(Percent);
+                         
+                     },
+                     onDraw: function(Percent){
+                        
+                     },
+                     onDestroy: function(){
+                         alert('destroy');
+                     }
+                     
+                 });
+                $('#getStat').on('click', function(){
+                   alert(x1.getStat()); 
+                    
+                });
+                
+                 var x1 = $('#element1').circular({
+                     'border-color': 'rgba(108, 122, 137,.1)',
+                     initPercentValue: 50,
+                     velocity:10,
+                    radius:200,
+                     text: 'asd',
+                      infocircle: {
+                            'background-color': '#fff',
+                            'shadow-color': 'rgba(21, 21, 21,1)',
+                            blur: 2,
+                          shadowOffsetY:-1,
+                          shadowOffsetX:0
+
+                     },
+                     
+                     onSuccess: function(Percent){
+                         alert(Percent);
+                         
+                     }
+                      
+                 });         
+                
+                $('#plus').on('click', function(){
+                    x1.setBar(25);                
+                });
+                
+                $('#min').on('click', function(){
+                    x1.setBar(10);                
+                });
+                
+                $('#grow').on('click', function(){
+                    x1.setBar(100);                
+                });
+                
+                $('#shrink').on('click', function(){
+                    x1.setBar(0);       
+                });
+                $('#destroy').on('click', function(){
+                    x1.destroy();       
+                });
+                
+                // Initialize plugin with user defined options.
+               /* $('#element').demoplugin({
+                  option1: 2000,
+                  option2: 'value',
+                  callback1: function () { 
+                  
+                  }
+                });*/
+
+                // Call a public method, no arguments.
+                //$('#element').demoplugin('fooPublic');
+
+               
+                /*
+                
+                // Call a public method with arguments.
+                
+
+                // Get a plugin option.
+                //$('#element').demoplugin('option', 'key');
+
+                // Set a plugin option after plugin initialization.
+                $('#element').circular('option', 'key', 'asdasd');
+
+                // Destroy plugin.
+                $('#element').circular('destroy');*/
+                
+                
+                
+                
+			});
+		</script>
+	</body>
+</html>
