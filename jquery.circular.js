@@ -1,3 +1,11 @@
+/*
+ *  jquery-circular - v1.0.0
+ *  A jQuery Circle Chart
+ *  http://www.circular.cabcom13.de
+ *
+ *  Made by Sven Schmalfuß
+ *  Under MIT License
+ */
 (function($){
  "use strict";
   $.fn.circular = function(options) {
