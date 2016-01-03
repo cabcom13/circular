@@ -1,5 +1,5 @@
 /*
- *  jquery-circular - v1.0.0
+ *  jquery-circular - v1.0.1
  *  A jQuery Circle Chart
  *  http://www.circular.cabcom13.de
  *
@@ -8,6 +8,7 @@
  */
 (function($){
  "use strict";
+    
   $.fn.circular = function(options) {
     // support multiple elements
     if (this.length > 1){
@@ -16,7 +17,6 @@
         });
         return this;
     }
-    
     var _this = this;
     var raf =
         window.requestAnimationFrame ||
@@ -25,28 +25,37 @@
         window.msRequestAnimationFrame;
     window.requestAnimationFrame = raf;  
     
+    
+      
     var defaults = {
         style: 'full',
         radius: 150,
         targetpercent: 0,
+        initPercentValue:0,
         velocity: 10,
         background: 'rgba(21,21,21,.05)',
         'border-radius':1,
-        'border-color': 'rgba(21,21,21,.5)',
+        'border-color': 'rgba(21,21,21,0)',
         'border-style': 'solid',
+        text: 'Verfügbar',
+        state_percent: 0,
         infocircle: {
-            'background-color': '#BDC3C7',
+            'background-color': '#FFFFFF',
             'shadow-color': 'rgba(21, 21, 21,.3)',
-            blur: 10,
+            blur: 5,
             shadowOffsetX: 0,
-            shadowOffsetY: 0
+            shadowOffsetY: 0,
+            'font-size': '13px',
+            'font-family': 'Arial',
+            color: '#212121',
+            'text-align': "center",
+            showIndicator: true
         },
         datacircle:{
             innercolor: '#AAD138',
             outercolor: '#83A324',
         },
-        text: 'Verfügbar',
-        state_percent: 0,
+
         onSuccess: function(){
             
         },
@@ -59,10 +68,11 @@
         onDestroy: function(){
             
         }
+         
+
     };
     
- 
-    options = $.extend({}, defaults, options);  
+ options = $.extend({}, defaults, options); 
     
     
     // private variables
@@ -159,9 +169,9 @@
             ctx.shadowBlur = 0;
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY =0;
-            ctx.font = "15px Arial";
-            ctx.fillStyle = "#212121";
-            ctx.textAlign = "center";
+            ctx.font = options.infocircle["font-size"]+' '+ options.infocircle["font-family"];
+            ctx.fillStyle = options.infocircle.color;
+            ctx.textAlign = options.infocircle["text-align"];
             if(options.style === 'half'){
                 ctx.fillText(options.text.toUpperCase(), centerX, centerY-(options.radius/5));
             } else {
@@ -169,17 +179,17 @@
             }
             ctx.closePath();
 
-            ctx.shadowBlur = 0;
-            ctx.font = "bold 15px Arial";
-            ctx.fillStyle = "#212121";
 
-            ctx.textAlign = "center";
-            if(options.style === 'half'){
-                 ctx.fillText(initPercentValue+'%', centerX, centerY-(options.radius/5)+20);   
-            } else {
-                ctx.fillText(initPercentValue+'%', centerX, centerY+20);  
-            }
-        
+                ctx.font = "bold 15px Arial";
+                ctx.fillStyle = "#212121";
+
+                ctx.textAlign = "center";
+                if(options.style === 'half'){
+                     ctx.fillText(options.state_percent+'%', centerX, centerY-(options.radius/5)+20);   
+                } else {
+                    ctx.fillText(options.state_percent+'%', centerX, centerY+20);  
+                }
+
     };  
     
     var draw = function() {
@@ -209,14 +219,15 @@
             
             ctx.fill();            
 
+            // DATA CIRCLE
             ctx.beginPath();
             ctx.arc(centerX, centerY, radius1, 0, size, true); // outer (filled)
             ctx.arc(centerX, centerY, centercircle, 0, size, true); // outer (unfills it)
             ctx.closePath();
-            ctx.lineWidth=2;
+            ctx.lineWidth=0;
             ctx.shadowColor = 'transparent';
             ctx.strokeStyle = options.datacircle.outercolor;
-            ctx.stroke();
+            //ctx.stroke();
             // create radial gradient
             var grd = ctx.createRadialGradient(centerX, centerY, 75, centerX, centerY, 150);
             // light blue
@@ -240,11 +251,11 @@
 
             ctx.beginPath();
             ctx.shadowBlur = 0;
-                    ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY =0;
-            ctx.font = "15px Arial";
-            ctx.fillStyle = "#212121";
-            ctx.textAlign = "center";
+            ctx.font = options.infocircle["font-size"]+' '+ options.infocircle["font-family"];
+            ctx.fillStyle = options.infocircle.color;
+            ctx.textAlign =options.infocircle["text-align"];
             if(options.style === 'half'){
                 ctx.fillText(options.text.toUpperCase(), centerX, centerY-(options.radius/5));
             } else {
@@ -257,6 +268,7 @@
             ctx.font = "bold 15px Arial";
             ctx.fillStyle = "#212121";
             ctx.textAlign = "center";  
+   
             if(options.style === 'half'){
                  ctx.fillText(initPercentValue+'%', centerX, centerY-(options.radius/5)+20);   
             } else {
